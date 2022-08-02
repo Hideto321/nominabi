@@ -1,25 +1,32 @@
 
+
 .header_title {
-    background-color: rgba(255, 171, 15, 0.555);
+    background-color: rgba(255, 181, 34, 0.339);
     width: 100%;
     height: 2em;
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 3%;
     padding-top: 30px;
+    position: relative;
+    z-index: 1;
+    text-shadow:1px 0 5px rgb(252, 252, 252);
+    font-size: 40px;
 }
 #header_pic {
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    height: 20em;
+    height: 30em;
     object-fit: cover;
-    object-position: 0 0;
+    object-position: 0 43%;
+    position: absolute;
+    top: 0;
 }
 .exp_title {
     display: block;
-    margin: 2% auto 2% auto;
+    margin: 22% auto 2% auto;
     /* padding: 0 0 10px 1%; */
     width: 60%;
     border-bottom: solid 3px rgb(90, 90, 90);
@@ -44,4 +51,17 @@
 .exp_comment {
     font-size: 20px;
     margin: 20px 0 20px 25px;
+}
+.station_name_search {
+    background-color: rgb(254, 221, 158);
+    width: 20%;
+    text-align:center;
+    padding:3vh 0;
+    margin: 4% auto 0 auto;
+    border-radius: 15px 15px 0 0;
+}
+.search_contents {
+    width: 100%;
+    height: 50vh;
+    background-color: rgb(254, 221, 158);
 }
