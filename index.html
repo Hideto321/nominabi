@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/nomalize.css">
     <link rel="stylesheet" href="css/style.css"> 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <title>Nominabi</title>
 </head>
 <body>
@@ -36,6 +34,39 @@
     <h2 class="station_name_search">駅名で探す</h2>
     <div class="search_contents">
         <!-- <h2 class="map_search">マップで探す</h2> -->
+        <div class="your_station_box">
+            <p class="your_station_name">あなたの出発駅</p>
+        </div>
+        
+        <form class="search_form" action="/index.js" method="get">
+            <div>
+                <input type="text" id="stationName" name="stationName" placeholder="駅名">
+            </div>
+            <div class="form_checkBox">
+                <select type="text" id="year" name="year"></select>年
+            </div>
+            <div class="form_checkBox">
+                <select type="text" id="month" name="month"></select>月
+            </div>
+            <div class="form_checkBox">
+                <select type="text" id="day" name="day"></select>日
+            </div>
+            <div class="form_checkBox">
+                <select type="text" id="hours" name="hours"></select>時
+            </div>
+            <div class="form_checkBox">
+                <select type="text" id="minuts" name="minuts"></select>分
+            </div>
+            <div class="form_radio">
+                <input type="radio" id="conditions" name="conditions" value="出発">出発
+                <input type="radio" id="conditions" name="conditions" value="到着">到着
+                <input type="radio" id="conditions" name="conditions" value="始発">始発
+                <input type="radio" id="conditions" name="conditions" value="終電">終電
+            </div>
+            <!-- フォームに現在時刻を入れるために、下に記載。
+            記載順に処理されるから後に書かないとエラーになる -->
+            <script src="index.js"></script>
+        </form>
     </div>
     <script>
         // 今後動的にする可能性があるため、スクリプトを記述。
