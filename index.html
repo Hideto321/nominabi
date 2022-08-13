@@ -26,9 +26,6 @@
                 提案された最適な場所が繁華街とは限らないので<br>
                 そんな時のために、おすすめのお店、人気のお店も本サイトで提案させて頂きます。
             </li>
-            <!-- <li class="exp_comment">
-                コメント３
-            </li> -->
         </ul>
     </div>
     <h2 class="station_name_search">駅名で探す</h2>
@@ -36,25 +33,23 @@
         <!-- <h2 class="map_search">マップで探す</h2> -->
         <div class="your_station_box">
             <p class="your_station_name">あなたの出発駅</p>
-        </div>
-        
-        <form class="search_form" action="/index.js" method="get">
-            <div>
-                <input type="text" id="stationName" name="stationName" placeholder="駅名">
-            </div>
-            <div class="form_checkBox">
-                <select type="text" id="year" name="year"></select>年
-            </div>
-            <div class="form_checkBox">
-                <select type="text" id="month" name="month"></select>月
-            </div>
-            <div class="form_checkBox">
-                <select type="text" id="day" name="day"></select>日
-            </div>
-            <div class="form_checkBox">
-                <select type="text" id="hours" name="hours"></select>時
-            </div>
-            <div class="form_checkBox">
+            <form class="your_search_form" action="/index.js" method="get">
+                <div>
+                    <input type="text" id="stationName" name="stationName" placeholder="駅名">
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="year" name="year"></select>年
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="month" name="month"></select>月
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="day" name="day"></select>日
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="hours" name="hours"></select>時
+                </div>
+                <div class="form_checkBox">
                 <select type="text" id="minuts" name="minuts"></select>分
             </div>
             <div class="form_radio">
@@ -64,9 +59,50 @@
                 <input type="radio" id="conditions" name="conditions" value="終電">終電
             </div>
             <!-- フォームに現在時刻を入れるために、下に記載。
-            記載順に処理されるから後に書かないとエラーになる -->
-            <script src="index.js"></script>
-        </form>
+                記載順に処理されるから後に書かないとエラーになる -->
+                <script src="index.js"></script>
+            </form>
+        </div>
+        <div class="partner_station_box">
+            <p class="partner_station_name">相手の出発駅</p>
+            <form class="partner_search_form" action="/index.js" method="get">
+                <div>
+                    <input type="text" id="stationName" name="stationName" placeholder="駅名">
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="year" name="year"></select>年
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="month" name="month"></select>月
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="day" name="day"></select>日
+                </div>
+                <div class="form_checkBox">
+                    <select type="text" id="hours" name="hours"></select>時
+                </div>
+                <div class="form_checkBox">
+                <select type="text" id="minuts" name="minuts"></select>分
+            </div>
+            <div class="form_radio">
+                <input type="radio" id="conditions" name="conditions" value="出発">出発
+                <input type="radio" id="conditions" name="conditions" value="到着">到着
+                <input type="radio" id="conditions" name="conditions" value="始発">始発
+                <input type="radio" id="conditions" name="conditions" value="終電">終電
+            </div>
+            <!-- フォームに現在時刻を入れるために、下に記載。
+                記載順に処理されるから後に書かないとエラーになる -->
+                <script src="index.js"></script>
+            </form>
+        </div>
+        <div id="map"></div>
+        <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlqKn88pQQQXhG-gdZOLnc7y4BLlA5uCo&callback=initMap"></script>
+        
+        座標から店舗取得
+        <div id="shop_search"></div>
+        <!-- hotpepperAPIから、各地点の中心地半径○km以内の店舗情報をだす -->
+        <script async src="http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=0eaac536fc8a8837"></script>
+        lat=34.67&lng=135.52&range=5&order=4
     </div>
     <script>
         // 今後動的にする可能性があるため、スクリプトを記述。

@@ -1,3 +1,5 @@
+
+
 // 表示させる要素と今日の日付をそれぞれ取得
 let year = document.getElementById("year");
 let month = document.getElementById("month");
@@ -54,3 +56,70 @@ for (let i = 00; i <= 59; i++) {
         option.setAttribute("selected", true)
     }
 }
+
+// ２点間の直線距離で中心を出して、中心の半径○km内の店を出す
+// 店を選んで、その店に紐づいた駅を出す
+
+function initMap() {
+    const geocoder = new google.maps.Geocoder;
+    //　マップの初期設定.　中心やzoomを設定している
+    const defaultSettings = {
+        zoom: 15,
+        center:
+        {
+            lat: 35.6811673,
+            lng: 139.7670516
+        }
+    };
+    const map = new google.maps.Map(
+        // mapっていうidがついたdivに対して,マップを適用させている
+        document.querySelector('#map'),
+        defaultSettings
+    );
+}
+
+
+// const API_KEY = '?key=0eaac536fc8a8837';
+// const LAT = 35.6811673;
+// const LNG = 139.7670516;
+
+// let cback = function(data) {
+// console.log('callback', data);
+// };
+
+// let script = document.createElement('script');
+// script.src = 'http://webservice.recruit.co.jp/hotpepper/gourmet/v1/'
+// + API_KEY
+// + '&lat=' + LAT
+// + '&lng=' + LNG
+// + '&range=5&format=jsonp&callback=cback';
+
+// document.body.appendChild(script);
+
+// function initMap() {
+//     var opts = {
+//         zoom: 15,
+//         center: new google.maps.LatLng(35.709984,139.810703)
+//     };
+//     var map = new google.maps.Map(document.getElementById("map"), opts);
+// }
+
+// function initMap() {
+//     var mapPosition = new google.maps.LatLng(35.6882495, 139.6856557);//緯度経度
+//     var map = new google.maps.Map(document.getElementById('map'), {
+//         zoom: 17,//ズーム
+//         center: mapPosition
+//     });
+// }
+
+// function googleMap() {
+//     var latlng = new google.maps.LatLng(35.90977599140045, 139.40254908920852);/* 座標を入れる */
+//     var myOptions = {
+//         zoom: 18, /*拡大比率 値が大きいと詳細に表示され、値が小さいと俯瞰*/
+//         scrollwheel: false, /* スクロールを無効化 */
+//         streetViewControl: false, /*ストリートビューを表示させない*/
+//         center: latlng, /*表示枠内の中心を軸にする*/
+//         mapTypeControlOptions: { mapTypeIds: ['style', google.maps.MapTypeId.ROADMAP] }/*表示タイプの指定*/
+//     };
+//     var gmap = new google.maps.Map(document.getElementById('map'), myOptions);
+// }
