@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: unset !important;
+        }
+
+        .formWrap {
+            background-color: rgba(33,33,33,0.3);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            position: absolute;
+            bottom: 120px;
+            left: 100px;
+            z-index: 100;
+        }
+
+        .formWrap input {
+            margin-top: 10px;
+            width: 200px;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<div><p id="route-time"></p></div>
+<div id="map"></div>
+<!-- 開発のための一時的なやつ.俺の書いたやつに、書き換えが必要
+※IDは固定 -->
+<form class="formWrap" onsubmit="getInputAddress(); return false;">
+    <input type="text" id="place1" value="笠幡駅"/> <br>
+    <input type="text" id="place2" value="狭山市駅" /> <br>
+    <input type="submit" value="search">
+</form>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlqKn88pQQQXhG-gdZOLnc7y4BLlA5uCo&callback=initMap" async defer></script>
+<script>
+    let directionsService;
+    let directionsRenderer;
+    let distanceMatrixservice;
+    let map;
+
+    let userLatLng = [];
+
+    // ユーザーが入力した住所から緯度経度を取得
+    function getInputAddress() {
+        getLatLng(document.getElementById('place1').value);
+        getLatLng(document.getElementById('place2').value);
+        setTimeout(drowRoute, 1000);
+    }
+
+    // グローバル変数にpush
+    // 使い回す変数だからグローバルにいれてる
+    // 別関数から参照したい
+    function workLatLng(latLng) {
+        userLatLng.push(latLng);
+    }
+    // ユーザーの入力した住所を緯度経度に変えてる
+    // 見つからなかったらエラー表示
+    function getLatLng(inputAddress) {
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({
+                address: inputAddress,
+            },
+            function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    for (let i in results) {
+                        if (results[i].geometry) {
+                            workLatLng([results[i].geometry.location.lat(), results[i].geometry.location.lng()]);
+                        }
+                    }
+                } else if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
+                    alert("住所が見つかりませんでした。");
+                } else if (status === google.maps.GeocoderStatus.ERROR) {
+                    alert("サーバ接続に失敗しました。");
+                } else if (status === google.maps.GeocoderStatus.INVALID_REQUEST) {
+                    alert("リクエストが無効でした。");
+                } else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                    alert("リクエストの制限回数を超えました。");
+                } else if (status === google.maps.GeocoderStatus.REQUEST_DENIED) {
+                    alert("サービスが使えない状態でした。");
+                } else if (status === google.maps.GeocoderStatus.UNKNOWN_ERROR) {
+                    alert("原因不明のエラーが発生しました。");
+                }
+            });
+    }
+    // ユーザーが入力した２点間を線で結んで、線の中心を計算
+    function drowRoute() {
+        const center = {lat: userLatLng[0][0], lng: userLatLng[0][1]};
+        const options = {zoom: 15, scaleControl: true, center: center};
+        map = new google.maps.Map(
+            document.getElementById('map'), options);
+
+        const position1 = {lat: userLatLng[0][0], lng: userLatLng[0][1]};
+        const position2 = {lat: userLatLng[1][0], lng: userLatLng[1][1]};
+        const centerPosition = {lat: (userLatLng[0][0]  + userLatLng[1][0]) / 2, lng: (userLatLng[0][1]  + userLatLng[1][1]) / 2};
+
+        const mk1 = new google.maps.Marker({position: position1, map: map});
+        const mk2 = new google.maps.Marker({position: position2, map: map});
+        new google.maps.Marker({position: centerPosition, map: map});
+
+        const distance = haversineDistance(mk1, mk2);
+        console.log("Distance between positions: " + distance.toFixed(2) + " km. half-> " + (distance.toFixed(2) / 2 + "km"));
+
+        const popylinePath = new google.maps.Polyline({path: [position1, position2], map: map});
+        console.log(popylinePath.getPath());
+    }
+
+
+
+    // map初期化
+    // 一番最初に走るメソッド。　初期のやつ
+    // APIキーの最後でコールバックを指定してる
+    function initMap() {
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        distanceMatrixservice = new google.maps.DistanceMatrixService();
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 16,
+            center: { lat: 35.6812405, lng: 139.7649361 },
+        });
+
+        directionsRenderer.setMap(map);
+
+        directionsRenderer.setOptions({
+            preserveViewport: true,
+        });
+    }
+    // 出発地点と到着地点の距離を計算してる
+    function haversineDistance(mk1, mk2) {
+        const R = 6371.071;
+        const rlat1 = mk1.position.lat() * (Math.PI/180);
+        const rlat2 = mk2.position.lat() * (Math.PI/180);
+        const difflat = rlat2-rlat1;
+        const difflon = (mk2.position.lng()-mk1.position.lng())
+            * (Math.PI/180);
+
+        return 2 * R
+            * Math.asin(Math.sqrt(Math.sin(difflat / 2) * Math.sin(difflat / 2)
+                + Math.cos(rlat1) * Math.cos(rlat2)
+                * Math.sin(difflon / 2) * Math.sin(difflon / 2)));
+    }
+</script>
+</body>
+</html>
